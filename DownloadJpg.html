@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Table as PNG</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+  <style>
+    /* Container with border */
+    #tableContainer {
+      border: 2px solid #000; /* You can customize the border style */
+      display: none;
+    }
+
+
+    /* Table cell and header styles (optional, adjust as needed) */
+    #myTable th, #myTable td {
+      border: 1px solid #000; /* Customize cell border style */
+      padding: 8px; /* Adjust cell padding */
+      text-align: center; /* Center cell content */
+    }
+  </style>
+</head>
+<body>
+
+<!-- 在這邊組表格 -->
+<div id="tableContainer">
+    <table id="myTable">
+      <tr>
+        <th>Header 1</th>
+        <th>Header 2</th>
+      </tr>
+      <tr>
+        <td>Data 1</td>
+        <td>Data 2</td>
+        
+      </tr>
+    </table>
+  </div>
+
+<!-- 新增一個按鈕來觸發下載 -->
+<button id="downloadButton">Download Table as PNG</button>
+
+<script>
+  // j處理按鈕點選事件的 jQuery 程式碼
+  $(document).ready(function() {
+    $("#downloadButton").on("click", function() {
+        //$("#tableContainer").css("display", "inline-block");
+        downloadPng('tableContainer');
+       // $("#tableContainer").css("display", "none");
+    });
+  });
+
+  function downloadPng(id){
+    /*旋轉90度
+    $("#myTable").css({
+        "transform": "rotate(90deg)",
+        "transform-origin": "0 0",
+        "border-collapse": "collapse" // Ensure borders collapse properly
+      });
+   */
+  
+ // 使用 html2canvas 將表格擷取為影像
+ html2canvas($("#"+id)[0]).then(function(canvas) {
+        // 將畫布轉換為資料 URL
+        var dataURL = canvas.toDataURL("image/png");
+        // 建立連結元素並觸發下載
+        var a = document.createElement("a");
+        a.href = dataURL;
+        a.download = "table.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+
+  }
+</script>
+
+</body>
+</html>
